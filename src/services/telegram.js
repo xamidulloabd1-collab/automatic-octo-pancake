@@ -7,25 +7,29 @@ export const sendOrderToTelegram = async (orderData) => {
   const { name, phone, address, items, totalAmount, comment } = orderData;
 
   let message = `🚨 **Yangi buyurtma - SMAKebabs!** 🍔\n\n`;
-  message += `👤 **Mijoz:** ${name}\n`;
-  message += `📞 **Tel:** ${phone}\n`;
-  message += `📍 **Manzil:** ${address}\n`;
+  message += `👤 **Mijoz:** ${name || 'Nomaʼlum'}\n`;
+  message += `📞 **Tel:** ${phone || 'Kiritilmagan'}\n`;
+  message += `📍 **Manzil:** ${address || 'Koʻrsatilmagan'}\n`;
   if (comment) message += `💬 **Izoh:** ${comment}\n\n`;
   
   message += `🛒 **Buyurtmalar:**\n`;
   
+  let calculatedTotal = 0;
+
   if (items && Array.isArray(items)) {
     items.forEach((item, index) => {
-      // Mahsulot soni va narxini har xil nomlanishlardan qidirib topamiz (xatolik chiqmasligi uchun)
-      const qty = item.quantity || item.qty || item.count || 1;
-      const price = item.price || 0;
+      const qty = Number(item.quantity || item.qty || item.count || item.soni || 1);
+      const price = Number(item.price || item.narx || item.cost || 0);
       const itemTotal = price * qty;
       
-      message += `${index + 1}. ${item.name || 'Mahsulot'} (${qty} dona) - ${itemTotal.toLocaleString()} so'm\n`;
+      calculatedTotal += itemTotal;
+      
+      const itemName = item.name || item.title || item.nomi || 'Mahsulot';
+      message += `${index + 1}. ${itemName} (${qty} dona) - ${itemTotal.toLocaleString()} so'm\n`;
     });
   }
 
-  const finalTotal = totalAmount || 0;
+  const finalTotal = Number(totalAmount || calculatedTotal || 0);
   message += `\n💰 **Umumiy summa:** ${finalTotal.toLocaleString()} so'm`;
 
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
