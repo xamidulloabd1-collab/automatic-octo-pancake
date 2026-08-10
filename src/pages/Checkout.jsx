@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext'; // Yo'lingizga qarab moslab qo'ying
 import { MapPin, Phone, User, ShoppingBag, CheckCircle } from 'lucide-react';
+import { sendOrderToTelegram } from '../services/telegram';
 
 export default function Checkout() {
   const { cart, clearCart, totalAmount } = useCart();
@@ -52,34 +53,35 @@ export default function Checkout() {
     }
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     if (cart.length === 0) return;
 
-    const BOT_TOKEN = "8807636347:AAFDoCYE1ZcF8nkB9Xo3MS-gPpbFQy2aEv0"; // O'zingizning tokeningiz
-    const CHAT_ID = "5828223008";     // O'zingizning chat IDingiz
+    setLoading(true);
 
-    let orderDetails = cart.map(item => `- ${item.name} (${item.quantity} ta) - ${item.price * item.quantity} so'm`).join('\n');
-    
-    let mapLinkText = formData.locationCoords 
-      ? `\n📍 Xarita lokatsiyasi: https://www.google.com/maps?q=${formData.locationCoords.lat},${formData.locationCoords.lng}`
-      : `\n📍 Manzil: ${formData.address}`;
+    // Manzil va lokatsiyani to'g'rilab shakllantiramiz
+    const finalAddress = formData.locationCoords 
+      ? `GPS Manzil (${formData.locationCoords.lat.toFixed(5)}, ${formData.locationCoords.lng.toFixed(5)})`
+      : formData.address;
 
-    const message = `🔥 Yangi Buyurtma (#SMAKebabs)!\n\n👤 Ism: ${formData.name}\n📞 Tel: +998 ${formData.phone}\n${mapLinkText}\n\n🛍 Buyurtmalar:\n${orderDetails}\n\n💰 Jami summa: ${totalAmount} so'm`;
+    // Tayyor orderData obyektini bizning xizmatimizga uzatamiz
+    const orderData = {
+      name: formData.name,
+      phone: `+998 ${formData.phone}`,
+      address: finalAddress,
+      items: cart,
+      totalAmount: totalAmount,
+    };
 
     try {
-      // Telegramga yuborish
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: message,
-        })
-      });
+      // Telegramga xabar yuborish
+      await sendOrderToTelegram(orderData);
 
-      // Agar koordinatalar mavjud bo'lsa, adminga tayyor xarita lokatsiyasini yuborish
+      // Agar koordinatalar mavjud bo'lsa, xarita lokatsiyasini ham yuborish
       if (formData.locationCoords) {
+        const BOT_TOKEN = "8807636347:AAFDoCYE1ZcF8nkB9Xo3MS-gPpbFQy2aEv0";
+        const CHAT_ID = "5828223008";
+        
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -96,6 +98,8 @@ export default function Checkout() {
     } catch (error) {
       console.error("Xatolik:", error);
       alert("Buyurtma yuborishda xatolik yuz berdi. Qaytadan urinib ko'ring.");
+    } finally {
+      setLoading(false);
     }
   };
 
