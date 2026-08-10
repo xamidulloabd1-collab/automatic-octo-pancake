@@ -1,7 +1,7 @@
 // src/services/telegram.js
 
 const BOT_TOKEN = "8807636347:AAFDoCYE1ZcF8nkB9Xo3MS-gPpbFQy2aEv0"; 
-const CHAT_ID = "5828223008";         
+const CHAT_ID = "5412360326";         
 
 export const sendOrderToTelegram = async (orderData) => {
   const { name, phone, address, items, totalAmount, comment } = orderData;
