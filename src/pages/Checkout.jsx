@@ -56,8 +56,8 @@ export default function Checkout() {
     e.preventDefault();
     if (cart.length === 0) return;
 
-    const BOT_TOKEN = "SIZNING_BOT_TOKEN"; // O'zingizning tokeningiz
-    const CHAT_ID = "SIZNING_CHAT_ID";     // O'zingizning chat IDingiz
+    const BOT_TOKEN = "8807636347:AAFDoCYE1ZcF8nkB9Xo3MS-gPpbFQy2aEv0"; // O'zingizning tokeningiz
+    const CHAT_ID = "5828223008";     // O'zingizning chat IDingiz
 
     let orderDetails = cart.map(item => `- ${item.name} (${item.quantity} ta) - ${item.price * item.quantity} so'm`).join('\n');
     
