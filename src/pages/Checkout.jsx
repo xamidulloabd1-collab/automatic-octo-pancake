@@ -80,7 +80,7 @@ const handleSubmit = async (e) => {
       // Agar koordinatalar mavjud bo'lsa, xarita lokatsiyasini ham yuborish
       if (formData.locationCoords) {
         const BOT_TOKEN = "8807636347:AAFDoCYE1ZcF8nkB9Xo3MS-gPpbFQy2aEv0";
-        const CHAT_ID = "5828223008";
+        const CHAT_ID = "5412360326";
         
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendLocation`, {
           method: 'POST',
