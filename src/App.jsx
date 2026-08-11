@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
@@ -34,7 +35,7 @@ export default function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col font-sans selection:bg-red-600 selection:text-white">
+        <div className="min-h-screen bg-white text-gray-900 flex flex-col font-sans selection:bg-red-600 selection:text-white">
           {!user && <LoginModal onLoginSuccess={(userData) => setUser(userData)} />}
 
           {user?.role === 'admin' ? (

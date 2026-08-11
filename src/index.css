@@ -1,13 +1,8 @@
 @import "tailwindcss";
 
-/* Barcha qismlarni mutlaqo qora qilish */
+/* Sahifaning umumiy oq foni va qora matni */
 body, html {
-  background-color: #000000 !important;
-  color: #ef4444;
+  background-color: #ffffff !important;
+  color: #111827 !important;
   font-family: 'Inter', sans-serif;
-}
-
-/* Asosiy konteynerlar foni */
-div, section, header, footer {
-  background-color: transparent;
 }
