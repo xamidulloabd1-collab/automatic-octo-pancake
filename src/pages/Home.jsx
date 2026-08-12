@@ -59,8 +59,9 @@ const Home = () => {
     }
   };
 
-  const handleAddToCart = (product) => {
-    if (product.category === 'pitsa' || product.isConfigurable || product.name.toLowerCase().includes('pitsa') || product.name.toLowerCase().includes('2+1')) {
+const handleAddToCart = (product) => {
+    // Pitsa bo'limidagi mahsulotlar oddiy qo'shiladi, faqat aksiya mahsuloti bo'lsagina oyna chiqadi
+    if (product.isPromo || product.name.toLowerCase().includes('2+1') || product.name.toLowerCase().includes('aktsiyasi')) {
       setActiveConfigItem(product);
       setSelectedPizzas({
         step: 1,
@@ -72,7 +73,6 @@ const Home = () => {
     }
     addToCart(product);
   };
-
   const handleConfigSubmit = () => {
     if (activeConfigItem) {
       const totalPrice = (selectedPizzas.pitsa1?.price || 0) + (selectedPizzas.pitsa2?.price || 0);
