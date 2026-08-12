@@ -91,17 +91,19 @@ const Home = () => {
     ? products.filter(p => p.category === activeCategory)
     : (products[activeCategory] || []);
 
+  const isHorizontalView = activeCategory === 'pitsa' || activeCategory === 'smak';
+
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans pb-24 antialiased">
       <main className="max-w-7xl mx-auto px-4 mt-6">
         
         {/* Banner */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-900 rounded-[2.5rem] p-6 md:p-10 flex flex-col md:flex-row items-center justify-between shadow-xl relative overflow-hidden">
+          <div className="bg-red-600 rounded-[2.5rem] p-6 md:p-10 flex flex-col md:flex-row items-center justify-between shadow-xl relative overflow-hidden">
             <div className="z-10 max-w-lg">
-              <span className="bg-white/20 text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Aksiya 2+1</span>
+              <span className="bg-white text-red-600 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Aksiya 2+1</span>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mt-3 mb-2">Haftaning har kuni 3 ta pitsa buyurtma qiling!</h2>
-              <p className="text-red-100 text-sm mb-6 font-normal">2 ta pitsa tanlang va 3-chisi (Margarita) bizdan sovg'a sifatida bepul qo'shiladi.</p>
+              <p className="text-white text-sm mb-6 font-normal">2 ta pitsa tanlang va 3-chisi (Margarita) bizdan sovg'a sifatida bepul qo'shiladi.</p>
               <button 
                 onClick={() => handleAddToCart({ name: '2+1 Pitsa Aktsiyasi', price: 0, category: 'pitsa' })}
                 className="bg-white text-red-600 hover:bg-gray-100 px-7 py-3 rounded-full font-semibold text-sm shadow-md transition-all duration-200 cursor-pointer"
@@ -110,7 +112,7 @@ const Home = () => {
               </button>
             </div>
             <div className="mt-6 md:mt-0 z-10">
-              <div className="w-44 h-44 md:w-56 md:h-56 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+              <div className="w-44 h-44 md:w-56 md:h-56 bg-red-700 rounded-full flex items-center justify-center border-2 border-white">
                 <span className="text-5xl md:text-6xl font-black text-white tracking-tight">2+1</span>
               </div>
             </div>
@@ -153,7 +155,7 @@ const Home = () => {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full font-medium text-xs whitespace-nowrap transition-all duration-200 capitalize cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-red-600 text-white shadow-md shadow-red-500/20'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-200'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
               }`}
             >
@@ -162,48 +164,90 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Mahsulotlar Gridi */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-[2rem] border border-gray-200 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300 group">
-              <div>
-                <div className="relative h-48 bg-gray-50 overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {/* Mahsulotlar: Gorizontal yoki Telefonda 2 ta ustunli Grid */}
+        {isHorizontalView ? (
+          <div className="space-y-4 max-w-4xl mx-auto">
+            {filteredProducts.map((product) => (
+              <div 
+                key={product.id} 
+                className="bg-white rounded-3xl border border-gray-200 p-4 flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition"
+              >
+                <div className="w-28 h-28 md:w-36 md:h-36 bg-gray-50 rounded-2xl overflow-hidden shrink-0 relative">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                   {product.discount && (
-                    <span className="absolute top-3 right-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                    <span className="absolute top-2 left-2 bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">
                       {product.discount}
                     </span>
                   )}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-base text-gray-900 mb-1 tracking-tight group-hover:text-red-600 transition-colors">{product.name}</h3>
-                  <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed mb-3">{product.description}</p>
-                </div>
-              </div>
 
-              <div className="p-4 pt-0 flex items-center justify-between mt-auto">
-                <div>
-                  <div className="text-red-600 font-bold text-base tracking-tight">{product.price.toLocaleString()} so'm</div>
-                  {product.oldPrice && (
-                    <div className="text-gray-400 text-[10px] line-through">{product.oldPrice.toLocaleString()} so'm</div>
-                  )}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm md:text-base text-gray-900 mb-1 truncate">{product.name}</h3>
+                  <p className="text-[11px] md:text-xs text-gray-500 line-clamp-2 leading-relaxed mb-3">
+                    {product.description || "Mazali va sersuv masalliqlardan tayyorlangan maxsus mahsulot."}
+                  </p>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-red-600 font-bold text-sm md:text-base">{product.price.toLocaleString()} so'm</div>
+                      {product.oldPrice && (
+                        <div className="text-gray-400 text-[10px] line-through">{product.oldPrice.toLocaleString()} so'm</div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      className="bg-red-600 hover:bg-red-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm cursor-pointer"
+                    >
+                      + Qo'shish
+                    </button>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all duration-200 shadow-md shadow-red-500/20 cursor-pointer"
-                >
-                  <span>+ Qo'shish</span>
-                </button>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="bg-white rounded-2xl border border-gray-200 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300 group">
+                <div>
+                  <div className="relative h-36 sm:h-48 bg-gray-50 overflow-hidden">
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {product.discount && (
+                      <span className="absolute top-2 right-2 sm:top-3 sm:right-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm">
+                        {product.discount}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-3 sm:p-4">
+                    <h3 className="font-semibold text-sm sm:text-base text-gray-900 mb-1 tracking-tight group-hover:text-red-600 transition-colors truncate">{product.name}</h3>
+                    <p className="text-[11px] text-gray-500 line-clamp-2 leading-relaxed mb-3">{product.description}</p>
+                  </div>
+                </div>
+
+                <div className="p-3 sm:p-4 pt-0 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mt-auto">
+                  <div>
+                    <div className="text-red-600 font-bold text-sm sm:text-base tracking-tight">{product.price.toLocaleString()} so'm</div>
+                    {product.oldPrice && (
+                      <div className="text-gray-400 text-[10px] line-through">{product.oldPrice.toLocaleString()} so'm</div>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl font-semibold text-xs flex items-center justify-center gap-1.5 transition-all duration-200 shadow-md shadow-red-200 cursor-pointer w-full sm:w-auto"
+                  >
+                    <span>+ Qo'shish</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
 
       {/* Yetkazib berish manzili modal */}
       {isAddressModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative border border-gray-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-gray-200">
             <button
               onClick={() => setIsAddressModalOpen(false)}
               className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
@@ -230,7 +274,7 @@ const Home = () => {
             
             <button
               onClick={() => setIsAddressModalOpen(false)}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-200 transition-all cursor-pointer"
             >
               Saqlash
             </button>
@@ -240,8 +284,8 @@ const Home = () => {
 
       {/* Filial tanlash modal */}
       {isBranchModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto border border-gray-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto border border-gray-200">
             <button
               onClick={() => setIsBranchModalOpen(false)}
               className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
@@ -286,10 +330,10 @@ const Home = () => {
         </div>
       )}
 
-      {/* Pitsa 2+1 Tanlash Modal Oynasi (Shaffofliksiz, oq fon va qizil matnlar) */}
+      {/* Pitsa 2+1 Tanlash Modal Oynasi */}
       {activeConfigItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-          <div className="bg-white border border-gray-200 rounded-[2rem] max-w-lg w-full p-6 shadow-2xl relative text-gray-900 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white">
+          <div className="bg-white border border-gray-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative text-gray-900 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveConfigItem(null)}
               className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
@@ -355,7 +399,7 @@ const Home = () => {
             {selectedPizzas.step === 1 ? (
               <button
                 onClick={() => setSelectedPizzas({ ...selectedPizzas, step: 2 })}
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-200 transition-all cursor-pointer"
               >
                 Keyingisi (2-pitsa)
               </button>
@@ -369,7 +413,7 @@ const Home = () => {
                 </button>
                 <button
                   onClick={handleConfigSubmit}
-                  className="w-2/3 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
+                  className="w-2/3 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-200 transition-all cursor-pointer"
                 >
                   Savatga qo'shish
                 </button>
