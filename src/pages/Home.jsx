@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useState } from 'react';
 import { products } from '../data/mockData';
 import { useCart } from '../context/CartContext';
@@ -7,7 +6,6 @@ const Home = () => {
   const [activeCategory, setActiveCategory] = useState('lavash');
   const [deliveryType, setDeliveryType] = useState('Yetkazib berish');
   
-  // Modal oynalar uchun holatlar
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isBranchModalOpen, setIsBranchModalOpen] = useState(false);
   
@@ -17,7 +15,6 @@ const Home = () => {
   const { addToCart } = useCart();
   const [activeConfigItem, setActiveConfigItem] = useState(null);
   
-  // 2+1 aktsiyasi uchun tanlangan pitsalar va ularning narxlari
   const [selectedPizzas, setSelectedPizzas] = useState({
     step: 1, 
     pitsa1: { name: 'Margarita Pitsa', price: 45000, image: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=300' },
@@ -25,7 +22,6 @@ const Home = () => {
     pitsa3: 'Margarita Pitsa (Bepul)'
   });
 
-  // Haqiqiy pitsa mahsulotlarini va ularning narxlarini to'g'ridan-to'g'ri mockData dan olamiz
   const pizzaOptions = products.filter(p => p.category === 'pitsa').map(p => ({
     name: p.name,
     price: p.price,
@@ -36,7 +32,6 @@ const Home = () => {
     ? [...new Set(products.map(p => p.category))] 
     : Object.keys(products);
 
-  // Brauzerning Geolocation API orqali joriy joylashuvni aniqlash funksiyasi
   const handleDetectLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -100,38 +95,37 @@ const Home = () => {
     <div className="min-h-screen bg-white text-gray-900 font-sans pb-24 antialiased">
       <main className="max-w-7xl mx-auto px-4 mt-6">
         
-        {/* Banner / Aksiya slayderi (Apple uslubidagi silliq gradient va yumaloqlik) */}
+        {/* Banner */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-900 rounded-[2.5rem] p-6 md:p-10 flex flex-col md:flex-row items-center justify-between shadow-2xl relative overflow-hidden">
+          <div className="bg-gradient-to-r from-red-600 via-red-700 to-red-900 rounded-[2.5rem] p-6 md:p-10 flex flex-col md:flex-row items-center justify-between shadow-xl relative overflow-hidden">
             <div className="z-10 max-w-lg">
-              <span className="bg-white/20 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Aksiya 2+1</span>
+              <span className="bg-white/20 text-white text-[11px] font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Aksiya 2+1</span>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white mt-3 mb-2">Haftaning har kuni 3 ta pitsa buyurtma qiling!</h2>
               <p className="text-red-100 text-sm mb-6 font-normal">2 ta pitsa tanlang va 3-chisi (Margarita) bizdan sovg'a sifatida bepul qo'shiladi.</p>
               <button 
                 onClick={() => handleAddToCart({ name: '2+1 Pitsa Aktsiyasi', price: 0, category: 'pitsa' })}
-                className="bg-white text-red-600 hover:bg-gray-50 px-7 py-3 rounded-full font-semibold text-sm shadow-md transition-all duration-200 active:scale-95"
+                className="bg-white text-red-600 hover:bg-gray-100 px-7 py-3 rounded-full font-semibold text-sm shadow-md transition-all duration-200 cursor-pointer"
               >
                 Tanlash
               </button>
             </div>
             <div className="mt-6 md:mt-0 z-10">
-              <div className="w-44 h-44 md:w-56 md:h-56 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-xl border border-white/20 shadow-inner">
+              <div className="w-44 h-44 md:w-56 md:h-56 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
                 <span className="text-5xl md:text-6xl font-black text-white tracking-tight">2+1</span>
               </div>
             </div>
-            <div className="absolute -right-10 -bottom-10 w-64 h-64 bg-red-500/20 rounded-full blur-3xl pointer-events-none"></div>
           </div>
         </div>
 
-        {/* Yetkazib berish / Olib ketish (iOS Segmented Control uslubi) */}
+        {/* Yetkazib berish / Olib ketish */}
         <div className="flex justify-center mb-8">
-          <div className="bg-gray-100/80 backdrop-blur-md border border-gray-200/60 p-1 rounded-full flex gap-1 max-w-sm w-full shadow-sm">
+          <div className="bg-gray-100 border border-gray-200 p-1 rounded-full flex gap-1 max-w-sm w-full shadow-sm">
             <button
               onClick={() => {
                 setDeliveryType('Yetkazib berish');
                 setIsAddressModalOpen(true);
               }}
-              className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
+              className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 deliveryType === 'Yetkazib berish' ? 'bg-red-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -142,7 +136,7 @@ const Home = () => {
                 setDeliveryType('Olib ketish');
                 setIsBranchModalOpen(true);
               }}
-              className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
+              className={`flex-1 py-2 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 deliveryType === 'Olib ketish' ? 'bg-red-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -151,16 +145,16 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Kategoriyalar paneli (Apple Horizontal Chip Navigatsiyasi) */}
-        <div className="flex gap-2.5 overflow-x-auto pb-4 mb-8 scrollbar-none sticky top-20 bg-white/80 backdrop-blur-xl z-30 pt-2">
+        {/* Kategoriyalar paneli */}
+        <div className="flex gap-2.5 overflow-x-auto pb-4 mb-8 scrollbar-none sticky top-20 bg-white z-30 pt-2">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-full font-medium text-xs whitespace-nowrap transition-all duration-200 capitalize ${
+              className={`px-5 py-2.5 rounded-full font-medium text-xs whitespace-nowrap transition-all duration-200 capitalize cursor-pointer ${
                 activeCategory === cat
-                  ? 'bg-red-600 text-white shadow-md shadow-red-500/20 scale-105'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200/70 border border-gray-200/40'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-500/20'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200'
               }`}
             >
               {cat}
@@ -168,10 +162,10 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Mahsulotlar Gridi (Apple Grid Card uslubi) */}
+        {/* Mahsulotlar Gridi */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white rounded-[2rem] border border-gray-100 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-red-600/30 transition-all duration-300 group">
+            <div key={product.id} className="bg-white rounded-[2rem] border border-gray-200 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300 group">
               <div>
                 <div className="relative h-48 bg-gray-50 overflow-hidden">
                   <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -196,7 +190,7 @@ const Home = () => {
                 </div>
                 <button
                   onClick={() => handleAddToCart(product)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all duration-200 shadow-md shadow-red-500/20 active:scale-95"
+                  className="bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 transition-all duration-200 shadow-md shadow-red-500/20 cursor-pointer"
                 >
                   <span>+ Qo'shish</span>
                 </button>
@@ -206,13 +200,13 @@ const Home = () => {
         </div>
       </main>
 
-      {/* Yetkazib berish manzili kiritish oynasi (iOS Modal Sheet uslubi) */}
+      {/* Yetkazib berish manzili modal */}
       {isAddressModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative border border-gray-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative border border-gray-200">
             <button
               onClick={() => setIsAddressModalOpen(false)}
-              className="absolute top-4 right-4 bg-gray-100 text-gray-500 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors"
+              className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
             >
               ✕
             </button>
@@ -221,7 +215,7 @@ const Home = () => {
             
             <button
               onClick={handleDetectLocation}
-              className="w-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200/80 py-2.5 rounded-xl font-semibold mb-3 flex items-center justify-center gap-2 text-xs transition-all active:scale-[0.98]"
+              className="w-full bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200 py-2.5 rounded-xl font-semibold mb-3 flex items-center justify-center gap-2 text-xs transition-all cursor-pointer"
             >
               📍 Mening joylashuvimni aniqlash
             </button>
@@ -231,12 +225,12 @@ const Home = () => {
               placeholder="Masalan: Mustaqillik ko'chasi, 12-uy"
               value={customerAddress}
               onChange={(e) => setCustomerAddress(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200/80 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-red-600 focus:bg-white transition-all mb-5"
+              className="w-full bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-xs text-gray-900 focus:outline-none focus:border-red-600 mb-5"
             />
             
             <button
               onClick={() => setIsAddressModalOpen(false)}
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all active:scale-[0.98]"
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
             >
               Saqlash
             </button>
@@ -244,13 +238,13 @@ const Home = () => {
         </div>
       )}
 
-      {/* Olib ketish filialini tanlash oynasi (iOS Modal Sheet) */}
+      {/* Filial tanlash modal */}
       {isBranchModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto border border-gray-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white rounded-[2rem] max-w-md w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto border border-gray-200">
             <button
               onClick={() => setIsBranchModalOpen(false)}
-              className="absolute top-4 right-4 bg-gray-100 text-gray-500 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors"
+              className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
             >
               ✕
             </button>
@@ -264,7 +258,7 @@ const Home = () => {
                   setIsBranchModalOpen(false);
                 }}
                 className={`border-2 rounded-2xl p-4 cursor-pointer transition-all flex items-center justify-between ${
-                  selectedBranch === 'Smakebab Asosiy' ? 'border-red-600 bg-red-50/30 shadow-sm' : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'
+                  selectedBranch === 'Smakebab Asosiy' ? 'border-red-600 bg-red-50 shadow-sm' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
                 }`}
               >
                 <div>
@@ -277,7 +271,7 @@ const Home = () => {
                 </div>
                 <div>
                   <a 
-                    href="https://www.google.com/maps/place/Smak+kebabs/@38.625288,66.252777,3553m/data=!3m1!1e3!4m6!3m5!1s0x3f4b93007d8eb911:0x24696e9124d541d1!8m2!3d38.6252879!4d66.2527766!16s%2Fg%2F11xm8j4xyl?hl=uz&entry=ttu&g_ep=EgoyMDI2MDgwOS4wIKXMDSoASAFQAw%3D%3D" 
+                    href="https://www.google.com/maps/place/Smak+kebabs/@38.625288,66.252777,3553m/data=!3m1!1e3!4m6!3m5!1s0x3f4b93007d8eb911:0x24696e9124d541d1!8m2!3d38.6252879!4d66.2527766!16s%2Fg%2F11xm8j4xyl?hl=uz&entry=ttu" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
@@ -292,13 +286,13 @@ const Home = () => {
         </div>
       )}
 
-      {/* Pitsa 2+1 Vizual Tanlash Modal Oynasi (iOS style popup) */}
+      {/* Pitsa 2+1 Tanlash Modal Oynasi (Shaffofliksiz, oq fon va qizil matnlar) */}
       {activeConfigItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-gray-100 rounded-[2rem] max-w-lg w-full p-6 shadow-2xl relative text-gray-900 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+          <div className="bg-white border border-gray-200 rounded-[2rem] max-w-lg w-full p-6 shadow-2xl relative text-gray-900 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveConfigItem(null)}
-              className="absolute top-4 right-4 bg-gray-100 text-gray-500 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors"
+              className="absolute top-4 right-4 bg-gray-100 text-gray-600 hover:bg-gray-200 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
             >
               ✕
             </button>
@@ -310,18 +304,18 @@ const Home = () => {
               {selectedPizzas.step === 1 ? 'Aksiyadagi 1-pitsani tanlang (3-chisi Margarita bepul qo\'shiladi)' : 'Aksiyadagi 2-pitsani tanlang'}
             </p>
 
-            <div className="bg-gray-50/80 border border-gray-100 rounded-2xl p-3 mb-4 flex flex-col gap-1 text-[11px] font-medium">
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-3 mb-4 flex flex-col gap-1 text-[11px] font-medium">
               <div className="flex justify-between">
-                <span className={selectedPizzas.step === 1 ? 'text-red-600 font-bold underline' : 'text-gray-600'}>
+                <span className={selectedPizzas.step === 1 ? 'text-red-600 font-bold underline' : 'text-gray-700'}>
                   1-pitsa: {selectedPizzas.pitsa1.name} ({selectedPizzas.pitsa1.price?.toLocaleString()} so'm)
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className={selectedPizzas.step === 2 ? 'text-red-600 font-bold underline' : 'text-gray-600'}>
+                <span className={selectedPizzas.step === 2 ? 'text-red-600 font-bold underline' : 'text-gray-700'}>
                   2-pitsa: {selectedPizzas.pitsa2.name} ({selectedPizzas.pitsa2.price?.toLocaleString()} so'm)
                 </span>
               </div>
-              <div className="text-right text-red-600 font-bold pt-1 border-t border-gray-200/60 mt-1 text-xs">
+              <div className="text-right text-red-600 font-bold pt-1 border-t border-gray-200 mt-1 text-xs">
                 Jami: {((selectedPizzas.pitsa1?.price || 0) + (selectedPizzas.pitsa2?.price || 0)).toLocaleString()} so'm
               </div>
             </div>
@@ -342,14 +336,14 @@ const Home = () => {
                       }
                     }}
                     className={`border-2 rounded-2xl p-3 cursor-pointer flex flex-col items-center text-center transition-all ${
-                      isSelected ? 'border-green-600 bg-green-50/30 shadow-sm' : 'border-gray-100 bg-gray-50/30 hover:border-gray-200'
+                      isSelected ? 'border-red-600 bg-red-50 shadow-sm' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
                     }`}
                   >
                     <img src={pizza.image} alt={pizza.name} className="w-16 h-16 object-cover rounded-full mb-2 shadow-inner" />
                     <h4 className="font-semibold text-xs text-gray-900 mb-0.5 line-clamp-1">{pizza.name}</h4>
                     <span className="text-gray-500 text-[10px] mb-2 font-normal">{pizza.price.toLocaleString()} so'm</span>
                     <span className={`text-[11px] font-semibold px-3 py-1 rounded-xl shadow-sm transition-all ${
-                      isSelected ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+                      isSelected ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700'
                     }`}>
                       {isSelected ? 'Tanlandi ✓' : 'Tanlash'}
                     </span>
@@ -361,7 +355,7 @@ const Home = () => {
             {selectedPizzas.step === 1 ? (
               <button
                 onClick={() => setSelectedPizzas({ ...selectedPizzas, step: 2 })}
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all active:scale-[0.98]"
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
               >
                 Keyingisi (2-pitsa)
               </button>
@@ -369,13 +363,13 @@ const Home = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedPizzas({ ...selectedPizzas, step: 1 })}
-                  className="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold text-xs transition-all active:scale-[0.98]"
+                  className="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl font-semibold text-xs transition-all cursor-pointer"
                 >
                   Orqaga
                 </button>
                 <button
                   onClick={handleConfigSubmit}
-                  className="w-2/3 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all active:scale-[0.98]"
+                  className="w-2/3 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold text-xs shadow-lg shadow-red-500/20 transition-all cursor-pointer"
                 >
                   Savatga qo'shish
                 </button>

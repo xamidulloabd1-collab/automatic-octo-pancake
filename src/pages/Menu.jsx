@@ -1,4 +1,3 @@
-// src/pages/Menu.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { categories, products } from '../data/mockData';
@@ -23,15 +22,13 @@ export default function Menu() {
         <p className="text-gray-500 text-sm mt-1">Mazali pitsalar, fast-food va shirinliklarni tanlang</p>
       </div>
 
-      {/* Search & Categories */}
       <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
-        {/* Category filters */}
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition ${
+              className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition cursor-pointer ${
                 activeCategory === cat.id
                   ? 'bg-red-600 text-white shadow-lg shadow-red-200'
                   : 'bg-gray-100 text-gray-700 hover:text-gray-900 border border-gray-200'
@@ -42,7 +39,6 @@ export default function Menu() {
           ))}
         </div>
 
-        {/* Search input */}
         <div className="relative w-full md:w-72">
           <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400" />
           <input
@@ -55,7 +51,6 @@ export default function Menu() {
         </div>
       </div>
 
-      {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProducts.map((product) => (
           <div key={product.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden group flex flex-col justify-between shadow-sm hover:shadow-lg transition">
@@ -80,7 +75,7 @@ export default function Menu() {
               <span className="text-red-600 font-black text-lg">{product.price.toLocaleString()} so'm</span>
               <button
                 onClick={() => addToCart(product)}
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition shadow-lg shadow-red-200"
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition shadow-lg shadow-red-200 cursor-pointer"
               >
                 Savatga
               </button>
