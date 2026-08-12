@@ -15,8 +15,7 @@ export default function Footer() {
             G'uzor tumanidagi eng mazali kebablar, pitsalar va fast-food mahsulotlari. Unutilmas lazzat va bepul yetkazib berish!
           </p>
           <div className="flex gap-4">
-            <span className="px-3 py-1.5 rounded bg-gray-900 text-white text-sm">Instagram</span>
-            <span className="px-3 py-1.5 rounded bg-gray-900 text-white text-sm">Telegram</span>
+            <a href="https://www.instagram.com/smakebabs?igsh=bXFmNGE0eHF5a3Nm&igsi=bXFmNGE0eHF5a3Nm&utm_source=qr"><span className="px-3 py-1.5 rounded bg-gray-900 text-white text-sm" >Instagram</span></a>
           </div>
         </div>
 
@@ -29,7 +28,7 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-red-500 shrink-0" />
-              <span className="font-semibold text-white">(90) 67-500-67</span>
+              <span className="font-semibold text-white">(90) 500-67-67</span>
             </li>
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-red-500 shrink-0" />
